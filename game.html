@@ -1,0 +1,219 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                let selectedNumber = 0;
+                let timeLeft = 240; // 240 = 4 minutes in seconds
+                let timerInterval;
+                let resetNumber = 20;
+                var totalNumbersSelected = 0;
+                var gameState = 1; // active
+
+                var numbers = [
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                ];
+
+                var numberBoard = shuffleNumbers(numbers)
+                numberBoard.forEach(number => {
+                    let $button = $("<button></button>")
+                        .text(number)
+                        .addClass("btn")
+                        .on("click", function () {
+                            if (gameState == 0) {
+                                console.log("Game over. Restart!")
+                                return;
+                            }
+
+                            console.log("Number", number, "Selected Number", selectedNumber)
+                            if (selectedNumber == resetNumber && number != 1) {
+                                stopCountdown()
+                                console.log("Game over. Number did not reset back to 1")
+                                alert("Game Over!")
+                                gameState = 0
+                                return;
+                            }
+                            else if (selectedNumber == resetNumber) {
+                                selectedNumber = 0;
+                            }
+
+                            if (number != selectedNumber+1) {
+                                stopCountdown()
+                                gameState = 0;
+                                alert("Game over!")
+                            }
+                            else {
+                                totalNumbersSelected+=1
+                                score = (totalNumbersSelected / numbers.length) * 100
+                                selectedNumber+=1
+                                $(this).toggleClass("selected");
+                                $("#scoreText").text(score.toFixed(2) + "%");
+                            }
+                        });
+
+                    $("#game-container").append($button);
+                });
+
+                function shuffleNumbers(numbers) {
+                    for (let i = numbers.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+                    }
+                    return numbers;
+                }
+
+                function updateTimerDisplay() {
+                    let minutes = Math.floor(timeLeft / 60);
+                    let seconds = timeLeft % 60;
+                    $("#timer").text(`${minutes}:${seconds.toString().padStart(2, '0')}`);
+                }
+
+                function startCountdown() {
+                    if (timerInterval) clearInterval(timerInterval); // Clear existing interval if any
+
+                    timerInterval = setInterval(function () {
+                        if (timeLeft > 0) {
+                            timeLeft--;
+                            updateTimerDisplay();
+                        } else {
+                            clearInterval(timerInterval);
+                            gameState = 0
+                            $("#timer").text("Time's Up!");
+                        }
+                    }, 1000);
+                }
+
+                function stopCountdown() {
+                    clearInterval(timerInterval); // Stop the countdown
+                    console.log("Timer stopped.");
+                }
+
+                startCountdown();
+
+                updateTimerDisplay(); // Initialize display
+            });
+        </script>
+        <style>
+            body {
+                background-color: #1f1f1f;
+            }
+            .btn {
+                margin: 5px;
+            }
+
+            .selected {
+                background-color: greenyellow; /* Change background color when selected */
+            }
+
+            #game-container {
+                width: auto;
+                height: auto;
+                border: 2px solid #333;
+                border-radius: 10px;
+                background-color: #1f1f1f;
+                display: grid;
+                grid-template-columns: repeat(20, 1fr); /* Adjust based on needed columns */
+                grid-template-rows: repeat(10, 1fr); /* 20 rows */
+                gap: 2px; /* Reduce gap */
+                padding: 5px;
+                box-sizing: border-box;
+                margin: 0 auto;
+                box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.4);
+            }
+
+            .btn {
+                aspect-ratio: 1 / 1; /* Ensures perfect squares */
+                max-width: 60px; /* Smaller button size */
+                background-color: #3b3b3b;
+                color: white;
+                font-size: 12px;
+                font-weight: bold;
+                border-radius: 5px;
+                border: none;
+                cursor: pointer;
+                transition: transform 0.2s ease, background-color 0.3s ease;
+                box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .btn:hover {
+                transform: scale(1.1);
+                background-color: #ffcc00;
+            }
+
+            .btn.selected {
+                background-color: #00ff00;
+                color: black;
+            }
+
+            .btn:active {
+                transform: scale(0.95);
+            }
+
+            #score-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+                background-color: #2d2d2d;
+                color: white;
+                font-family: 'Arial', sans-serif;
+                border-radius: 10px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+                width: 100%;
+                max-width: 400px;
+                margin: 20px auto;
+                font-size: 18px;
+            }
+
+            #timer {
+                font-size: 30px;
+                font-weight: bold;
+                color: #ffcc00;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+            }
+
+            #score {
+                font-size: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+            }
+
+            #scoreText {
+                margin-left: 10px;
+                font-size: 24px;
+                font-weight: bold;
+                color: #00ff00; /* Start with green */
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+                transition: color 0.5s ease;
+            }
+
+            #score-container:hover {
+                background-color: #3d3d3d;
+                box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div id="score-container">
+            <div id="timer">4:00</div>
+            <div id="score">Score: <div id="scoreText">0%</div></div>
+        </div>
+
+        <div id="game-container"></div>
+    </body>
+
+</html>
