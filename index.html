@@ -123,6 +123,7 @@
 
                 function reportGame() {
                     score = (totalNumbersSelected / numbers.length) * 100
+                    console.log("Score", score)
                     gtag('event', 'custom_action', {
                         'event_category': 'Game Finished',
                         'event_label': 'Score',
