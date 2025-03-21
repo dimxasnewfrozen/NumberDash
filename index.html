@@ -1,4 +1,16 @@
 <html>
+    <meta name="title" content="NumberDash - Beat the clock. Challenge your friends. Try it now!">
+    <meta name="description" content="Test your speed and strategy in NumberDash, the fast-paced number puzzle game! Race against time, and challenge your friends. Play now!">
+    <meta name="keywords" content="NumberDash, number game, puzzle game, math game, fast-paced game, strategy game, brain teaser, online game">
+    <meta name="author" content="Kenny Day">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="NumberDash - Beat the clock. Challenge your friends. Try it now!">
+    <meta property="og:description" content="Beat the clock. Challenge your friends. Try it now!">
+    <meta property="og:image" content="https://drive.google.com/file/d/1clfchqJbLOraoKvHGCasaVyYMRavq0or/view?usp=drive_link">
+    <meta property="og:url" content="https://dimxasnewfrozen.github.io/NumberDash/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="NumberDash">
+
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
@@ -105,37 +117,40 @@
         <style>
             body {
                 background-color: #1f1f1f;
-            }
-            .btn {
-                margin: 5px;
-            }
-
-            .selected {
-                background-color: greenyellow; /* Change background color when selected */
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-family: 'Arial', sans-serif;
             }
 
             #game-container {
-                width: auto;
+                width: 90vw; /* Responsive width */
+                max-width: 1000px; /* Prevents it from being too large */
                 height: auto;
+                aspect-ratio: 2 / 1;
                 border: 2px solid #333;
                 border-radius: 10px;
                 background-color: #1f1f1f;
                 display: grid;
-                grid-template-columns: repeat(20, 1fr); /* Adjust based on needed columns */
-                grid-template-rows: repeat(10, 1fr); /* 20 rows */
-                gap: 2px; /* Reduce gap */
-                padding: 5px;
+                grid-template-columns: repeat(20, 1fr); /* Keeps even column distribution */
+                grid-auto-rows: minmax(30px, 1fr); /* Ensures rows are evenly spaced */
+                gap: 10px; /* Reduce the gap between elements */
+                padding: 10px;
                 box-sizing: border-box;
-                margin: 0 auto;
+                margin: 10px auto;
                 box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.4);
             }
 
             .btn {
-                aspect-ratio: 1 / 1; /* Ensures perfect squares */
-                max-width: 60px; /* Smaller button size */
+                aspect-ratio: 1 / 1;
+                width: 100%; /* Makes sure buttons scale correctly */
+                max-width: 45px; /* Adjust size to reduce empty spaces */
                 background-color: #3b3b3b;
                 color: white;
-                font-size: 12px;
+                font-size: 14px;
                 font-weight: bold;
                 border-radius: 5px;
                 border: none;
@@ -163,29 +178,29 @@
 
             #score-container {
                 display: flex;
+                flex-wrap: wrap; /* Allows wrapping on smaller screens */
                 justify-content: space-between;
                 align-items: center;
                 padding: 10px;
                 background-color: #2d2d2d;
                 color: white;
-                font-family: 'Arial', sans-serif;
                 border-radius: 10px;
                 box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-                width: 100%;
+                width: 90%;
                 max-width: 400px;
                 margin: 20px auto;
-                font-size: 18px;
+                font-size: clamp(14px, 2vw, 18px); /* Responsive font size */
             }
 
             #timer {
-                font-size: 30px;
+                font-size: clamp(20px, 4vw, 30px); /* Scales with screen */
                 font-weight: bold;
                 color: #ffcc00;
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
             }
 
             #score {
-                font-size: 20px;
+                font-size: clamp(16px, 2.5vw, 20px);
                 display: flex;
                 align-items: center;
                 justify-content: flex-end;
@@ -193,9 +208,9 @@
 
             #scoreText {
                 margin-left: 10px;
-                font-size: 24px;
+                font-size: clamp(18px, 3vw, 24px);
                 font-weight: bold;
-                color: #00ff00; /* Start with green */
+                color: #00ff00;
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
                 transition: color 0.5s ease;
             }
