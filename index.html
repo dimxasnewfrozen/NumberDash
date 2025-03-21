@@ -15,6 +15,14 @@
 
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-02SVXKK8SD"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-02SVXKK8SD');
+        </script>
         <script>
             $(document).ready(function () {
                 let selectedNumber = 0;
@@ -45,14 +53,15 @@
                         .on("click", function () {
                             if (gameState == 0) {
                                 console.log("Game over. Restart!")
+                                reportGame();
                                 return;
                             }
 
-                            console.log("Number", number, "Selected Number", selectedNumber)
                             if (selectedNumber == resetNumber && number != 1) {
                                 stopCountdown()
                                 console.log("Game over. Number did not reset back to 1")
                                 alert("Game Over!")
+                                reportGame();
                                 gameState = 0
                                 return;
                             }
@@ -64,6 +73,7 @@
                                 stopCountdown()
                                 gameState = 0;
                                 alert("Game over!")
+                                reportGame();
                             }
                             else {
                                 totalNumbersSelected+=1
@@ -102,28 +112,28 @@
                             clearInterval(timerInterval);
                             gameState = 0
                             $("#timer").text("Time's Up!");
+                            reportGame();
                         }
                     }, 1000);
                 }
 
                 function stopCountdown() {
                     clearInterval(timerInterval); // Stop the countdown
-                    console.log("Timer stopped.");
+                }
+
+                function reportGame() {
+                    score = (totalNumbersSelected / numbers.length) * 100
+                    gtag('event', 'custom_action', {
+                        'event_category': 'Game Finished',
+                        'event_label': 'Score',
+                        'value': score
+                    });
                 }
 
                 startCountdown();
 
                 updateTimerDisplay(); // Initialize display
             });
-        </script>
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-02SVXKK8SD"></script>
-        <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-02SVXKK8SD');
         </script>
         <style>
             body {
