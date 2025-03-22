@@ -8,7 +8,7 @@
     <meta property="og:title" content="NumberDash - Beat the clock. Challenge your friends. Try it now!">
     <meta property="og:description" content="Beat the clock. Challenge your friends. Try it now!">
     <meta property="og:image" content="https://drive.google.com/file/d/1clfchqJbLOraoKvHGCasaVyYMRavq0or/view?usp=drive_link">
-    <meta property="og:url" content="https://dimxasnewfrozen.github.io/NumberDash/">
+    <meta property="og:url" content="numberdash.net">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="NumberDash">
     <meta name="google-adsense-account" content="ca-pub-8541952080576905">
@@ -103,7 +103,6 @@
                         .on("click", function () {
                             if (gameState == 0) {
                                 $("#status").text("Game Over!");
-                                console.log("Game over!")
                                 return;
                             }
 
@@ -185,8 +184,6 @@
                     if (timerInterval) clearInterval(timerInterval); // Clear any existing timer
 
                     timerInterval = setInterval(function () {
-
-                        console.log(timeElapsed);
                         timeElapsed++; // Increment the timer
                         updateTimerDisplayCountingUp(timeElapsed); // Update the display
                         
