@@ -61,6 +61,24 @@
                             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
                         ];
                     break;
+                    case "easy":
+                        var numbers = [
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,                            
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                        ];
+                    break;
                     default:
                         timeLeft = 240 ; // 240  = 4 minutes in seconds
                         var numbers = [
@@ -140,6 +158,12 @@
                     $("#timer").text(`${minutes}:${seconds.toString().padStart(2, '0')}`);
                 }
 
+                function updateTimerDisplayCountingUp(timeElapsed) {
+                    let minutes = Math.floor(timeElapsed / 60);
+                    let seconds = timeElapsed % 60;
+                    $("#timer").text(`${minutes}:${seconds.toString().padStart(2, '0')}`);
+                }
+
                 function startCountdown() {
                     if (timerInterval) clearInterval(timerInterval); // Clear existing interval if any
 
@@ -155,6 +179,27 @@
                     }, 1000);
                 }
 
+                function startCountUp() {
+                    let timeElapsed = 0; // Start from 0
+
+                    if (timerInterval) clearInterval(timerInterval); // Clear any existing timer
+
+                    timerInterval = setInterval(function () {
+
+                        console.log(timeElapsed);
+                        timeElapsed++; // Increment the timer
+                        updateTimerDisplayCountingUp(timeElapsed); // Update the display
+                        
+                        // Optional: Stop at a maximum time limit
+                        if (timeElapsed >= 9999) { // Adjust as needed
+                            clearInterval(timerInterval);
+                            gameState = 0;
+                            $("#timer").text("Max Time Reached!");
+                        }
+                    }, 1000);
+                }
+
+
                 function stopCountdown() {
                     clearInterval(timerInterval); // Stop the countdown
                 }
@@ -164,7 +209,13 @@
                     return urlParams.get(name);
                 }
 
-                startCountdown();
+                if (mode == "speed") {
+                    startCountUp();
+                }
+                else {
+                    startCountdown();
+                }
+                
 
                 updateTimerDisplay(); // Initialize display
             });
@@ -309,6 +360,7 @@
         <div id="footer-container">You’re on a race against the clock! Your mission: rapidly select the numbers 1 through 20, but there’s a twist! Once you hit 20, start back at 1. Don’t get tripped up! Ready to play? </div>
         <div id="mode-buttons">
             <button class="mode-btn" onclick="changeMode('easy')">Easy</button>
+            <button class="mode-btn" onclick="changeMode('speed')">Speed</button>
             <button class="mode-btn" onclick="changeMode('normal')">Normal</button>
             <button class="mode-btn" onclick="changeMode('schunk')">Schunk</button>
         </div>
