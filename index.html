@@ -25,25 +25,57 @@
         </script>
         <script>
             $(document).ready(function () {
+
                 let selectedNumber = 0;
-                let timeLeft = 240; // 240 = 4 minutes in seconds
                 let timerInterval;
                 let resetNumber = 20;
                 var totalNumbersSelected = 0;
                 var gameState = 1; // active
+                let timeLeft = 240; // 240 = 4 minutes in seconds
 
-                var numbers = [
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                ];
+                let mode = getQueryParam('mode');
+                switch (mode) {
+                    case "easy":
+                        timeLeft = 60;
+                        var numbers = [
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+                        ];
+                    break;
+                    case "schunk":
+                        timeLeft = 180; // 180 = 3 minutes in seconds
+                        var numbers = [
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,                            
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                        ];
+                    break;
+                    default:
+                        timeLeft = 240 ; // 240  = 4 minutes in seconds
+                        var numbers = [
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                        ];
+                }
 
                 var numberBoard = shuffleNumbers(numbers)
                 numberBoard.forEach(number => {
@@ -53,7 +85,7 @@
                         .on("click", function () {
                             if (gameState == 0) {
                                 console.log("Game over. Restart!")
-                                reportGame();
+
                                 return;
                             }
 
@@ -61,7 +93,7 @@
                                 stopCountdown()
                                 console.log("Game over. Number did not reset back to 1")
                                 alert("Game Over!")
-                                reportGame();
+
                                 gameState = 0
                                 return;
                             }
@@ -73,7 +105,7 @@
                                 stopCountdown()
                                 gameState = 0;
                                 alert("Game over!")
-                                reportGame();
+
                             }
                             else {
                                 totalNumbersSelected+=1
@@ -112,7 +144,6 @@
                             clearInterval(timerInterval);
                             gameState = 0
                             $("#timer").text("Time's Up!");
-                            reportGame();
                         }
                     }, 1000);
                 }
@@ -121,20 +152,20 @@
                     clearInterval(timerInterval); // Stop the countdown
                 }
 
-                function reportGame() {
-                    score = (totalNumbersSelected / numbers.length) * 100
-                    console.log("Score", score)
-                    gtag('event', 'custom_action', {
-                        'event_category': 'Game Finished',
-                        'event_label': 'Score',
-                        'value': score
-                    });
+                function getQueryParam(name) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get(name);
                 }
 
                 startCountdown();
 
                 updateTimerDisplay(); // Initialize display
             });
+
+            function changeMode(mode) {
+                window.location.search = `?mode=${mode}`;
+            }
+            
         </script>
         <style>
             body {
@@ -228,6 +259,30 @@
                 background-color: #00ff00;
                 color: black;
             }
+
+            #mode-buttons {
+                display: flex;
+                gap: 10px;
+                margin-top: 10px;
+            }
+
+            .mode-btn {
+                background-color: #3b3b3b;
+                color: white;
+                font-size: 16px;
+                font-weight: bold;
+                border-radius: 8px;
+                border: none;
+                padding: 10px 20px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .mode-btn:hover {
+                background-color: #ffcc00;
+                color: black;
+                transform: scale(1.1);
+            }
         </style>
     </head>
     
@@ -238,6 +293,11 @@
         </div>
         <div id="game-container"></div>
         <div id="footer-container">You’re on a race against the clock! Your mission: rapidly select the numbers 1 through 20, but there’s a twist! Once you hit 20, start back at 1. Don’t get tripped up! Ready to play? </div>
+        <div id="mode-buttons">
+            <button class="mode-btn" onclick="changeMode('easy')">Easy</button>
+            <button class="mode-btn" onclick="changeMode('normal')">Normal</button>
+            <button class="mode-btn" onclick="changeMode('schunk')">Schunk</button>
+        </div>
     </body>
 
 </html>
