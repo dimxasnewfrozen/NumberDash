@@ -84,16 +84,15 @@
                         .addClass("btn")
                         .on("click", function () {
                             if (gameState == 0) {
-                                console.log("Game over. Restart!")
-
+                                $("#status").text("Game Over!");
+                                console.log("Game over!")
                                 return;
                             }
 
                             if (selectedNumber == resetNumber && number != 1) {
                                 stopCountdown()
-                                console.log("Game over. Number did not reset back to 1")
+                                $("#status").text("Game Over!");
                                 alert("Game Over!")
-
                                 gameState = 0
                                 return;
                             }
@@ -104,6 +103,7 @@
                             if (number != selectedNumber+1) {
                                 stopCountdown()
                                 gameState = 0;
+                                $("#status").text("Game Over!");
                                 alert("Game over!")
 
                             }
@@ -113,6 +113,13 @@
                                 selectedNumber+=1
                                 $(this).toggleClass("selected");
                                 $("#scoreText").text(score.toFixed(2) + "%");
+
+                                if (totalNumbersSelected == numbers.length) {
+                                    $("#status").text("You win!");
+                                    stopCountdown()
+                                    gameState = 0
+                                }
+
                             }
                         });
 
@@ -192,12 +199,18 @@
                 max-width: 400px;
             }
     
+            #status {
+                font-size: 24px;
+                font-weight: bold;
+                color: #ffcc00;
+            }
+
             #timer {
                 font-size: 24px;
                 font-weight: bold;
                 color: #ffcc00;
             }
-    
+
             #score {
                 font-size: 18px;
                 display: flex;
@@ -288,6 +301,7 @@
     
     <body>
         <div id="score-container">
+            <div id="status"></div>
             <div id="timer">4:00</div>
             <div id="score">Score: <div id="scoreText">0%</div></div>
         </div>
